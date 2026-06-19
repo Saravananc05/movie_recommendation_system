@@ -5,12 +5,12 @@ A Flask-based Movie Recommendation System that recommends similar movies using C
 Features
 
 - Movie search
-- Content-based movie recommendations
+- Content-based recommendations
 - Movie posters
 - IMDb links
 - Movie ratings
 - Release year display
-- Responsive and attractive UI
+- Attractive UI
 
 Technologies Used
 
@@ -26,32 +26,26 @@ Dataset
 - TMDB 5000 Movies Dataset
 - TMDB 5000 Credits Dataset
 
-How to Run
+Installation
 
-1. Install dependencies
+Install the required libraries:
 
 pip install flask pandas scikit-learn
 
-2. Run the application
+Run the application:
 
 python app.py
 
-3. Open in browser
+Open in your browser:
 
 http://127.0.0.1:5000
 
-Project Structure
+Project Files
 
-movie_recommendation/
-│
-├── app.py
-├── recommendation.py
-├── tmdb_5000_movies.csv
-├── tmdb_5000_credits.csv
-├── movie_details.csv
-│
-├── templates/
-│   └── index.html
-│
-└── static/
-    └── style.css
+- app.py
+- recommendation.py
+- tmdb_5000_movies.csv
+- tmdb_5000_credits.csv
+- movie_details.csv
+- templates/index.html
+- static/style.css
