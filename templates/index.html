@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Movie Recommendation System</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="overlay">
+
+        <h1>🎬 Movie Recommendation System</h1>
+
+        <p>
+            Discover movies similar to your favorites
+        </p>
+
+        <form method="POST">
+
+            <input
+                type="text"
+                name="movie"
+                placeholder="Search Movie (e.g. Titanic)"
+                required>
+
+            <button type="submit">
+                Search
+            </button>
+
+        </form>
+
+    </div>
+
+</header>
+
+
+{% if movie_details %}
+
+<div class="movie-info">
+    <img src="{{movie_details.poster_url}}"
+         class="main-poster">
+
+    <h2>
+
+        <a href="{{ movie_details.imdb_url }}"
+           target="_blank"
+           class="movie-title">
+
+            {{ movie_details.title }}
+
+        </a>
+
+    </h2>
+
+    <p>
+        ⭐ Rating: {{ movie_details.rating }}
+    </p>
+
+    <p>
+        📅 Release Year: {{ movie_details.year }}
+    </p>
+
+</div>
+
+{% endif %}
+
+
+{% if recommendations %}
+
+<section class="results-section">
+
+    <h2>
+        Recommended Movies
+    </h2>
+
+    <div class="cards">
+
+        {% for movie in recommendations %}
+
+        <div class="card">
+            <img src="{{movie.poster_url}}"
+                 class="poster">
+
+            <div class="card-content">
+
+                <h3>
+
+                    <a href="{{ movie.imdb_url }}"
+                       target="_blank"
+                       class="movie-title">
+
+                        {{ movie.title }}
+
+                    </a>
+
+                </h3>
+
+                <p>
+                    ⭐ Rating: {{ movie.rating }}
+                </p>
+
+                <p>
+                    📅 Year: {{ movie.year }}
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endif %}
+
+</body>
+</html>
