@@ -4,7 +4,13 @@ A Flask-based Movie Recommendation System that recommends similar movies using C
 
 ---
 
-## 🚀 Features
+## 🚀 Live Demo
+
+https://movie-recommendation-system-x23s.onrender.com
+
+---
+
+## Features
 
 - Search movies by title
 - View movie poster
@@ -16,7 +22,7 @@ A Flask-based Movie Recommendation System that recommends similar movies using C
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - Python
 - Flask
@@ -27,7 +33,7 @@ A Flask-based Movie Recommendation System that recommends similar movies using C
 
 ---
 
-## 📊 Datasets Used
+## Datasets Used
 
 - TMDB 5000 Movies Dataset
 - TMDB 5000 Credits Dataset
@@ -35,11 +41,11 @@ A Flask-based Movie Recommendation System that recommends similar movies using C
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 ### Home Page
 
-![Home Page](screenshots/home_page.png)
+![Home Page](screenshots/homepage.png)
 
 ### Search Results
 
@@ -51,7 +57,7 @@ A Flask-based Movie Recommendation System that recommends similar movies using C
 
 ---
 
-## ⚙️ Run Locally
+## Run Locally
 
 ### 1. Clone the repository
 
@@ -85,53 +91,7 @@ http://127.0.0.1:5000
 
 ---
 
-## 🎯 How to Use
-
-1. Enter a movie title in the search box.
-2. Click the **Recommend** button.
-3. View:
-   - Movie Poster
-   - Movie Rating
-   - Release Year
-   - IMDb Link
-4. Explore similar movie recommendations.
-5. Click on any movie title to view more details on IMDb.
-
----
-
-## 🔍 Example Searches
-
-- Titanic
-- Avatar
-- Batman Begins
-- The Dark Knight
-- Iron Man
-- Avengers
-- Inception
-- Interstellar
-
----
-
-## 🧠 Recommendation Technique
-
-This project uses **Content-Based Filtering**.
-
-Movies are compared based on:
-
-- Genres
-- Keywords
-- Overview
-- Cast
-- Director
-
-The similarity between movies is calculated using:
-
-- Count Vectorization
-- Cosine Similarity
-
----
-
-## 📁 Important Files
+## Important Files
 
 - `app.py` — Flask application
 - `recommendation.py` — Recommendation engine
@@ -143,14 +103,6 @@ The similarity between movies is calculated using:
 
 ---
 
-## 👨‍💻 Author
+## Author
 
 **Saravanan**
-
-GitHub: https://github.com/Saravananc05
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License.
