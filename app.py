@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from recommendation import recommend, get_movie_details
+import os
 
 app = Flask(__name__)
 
@@ -23,5 +24,9 @@ def home():
         movie_details=movie_details
     )
 
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )

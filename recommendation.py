@@ -3,18 +3,40 @@ import ast
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
+# Load datasets
 movies = pd.read_csv("tmdb_5000_movies.csv")
 credits = pd.read_csv("tmdb_5000_credits.csv")
-movies = movies.merge(credits, on="title")
-details=pd.read_csv("movie_details.csv")
-details.columns=details.columns.str.strip()
+details = pd.read_csv("movie_details.csv")
 
-movies=movies.merge(
+details.columns = details.columns.str.strip()
+
+# Merge datasets
+movies = movies.merge(credits, on="title")
+
+movies = movies.merge(
     details,
     left_on="id",
     right_on="id",
     how="left"
 )
+
+# Keep only required columns
+movies = movies[
+    [
+        'movie_id',
+        'title',
+        'overview',
+        'genres',
+        'keywords',
+        'cast',
+        'crew',
+        'poster_url',
+        'rating',
+        'year'
+    ]
+]
+
+
 def convert(text):
     result = []
 
@@ -35,7 +57,7 @@ def fetch_cast(text):
 
         for i in ast.literal_eval(text):
 
-            if counter != 3:
+            if counter < 3:
                 result.append(i['name'])
                 counter += 1
             else:
@@ -63,23 +85,10 @@ def fetch_director(text):
     return result
 
 
-movies = movies[
-    [
-        'movie_id',
-        'title',
-        'overview',
-        'genres',
-        'keywords',
-        'cast',
-        'crew',
-        'poster_url',
-        'rating',
-        'year'
-    ]
-]
-
+# Remove missing values
 movies.dropna(inplace=True)
 
+# Feature extraction
 movies['genres'] = movies['genres'].apply(convert)
 movies['keywords'] = movies['keywords'].apply(convert)
 movies['cast'] = movies['cast'].apply(fetch_cast)
@@ -113,7 +122,7 @@ movies['tags'] = (
     + movies['crew']
 )
 
-
+# Final dataframe
 new_df = movies[
     [
         'movie_id',
@@ -123,29 +132,27 @@ new_df = movies[
         'rating',
         'year'
     ]
-]
+].copy()
 
 new_df['tags'] = new_df['tags'].apply(
     lambda x: " ".join(x)
 )
 
+# Reduced memory usage
 cv = CountVectorizer(
-    max_features=5000,
+    max_features=1500,
     stop_words='english'
 )
 
-vectors = cv.fit_transform(
-    new_df['tags']
-).toarray()
-
-similarity = cosine_similarity(vectors)
+vectors = cv.fit_transform(new_df['tags'])
 
 
 def get_movie_details(movie_name):
 
     matches = movies[
         movies['title'].str.lower().str.contains(
-            movie_name.lower()
+            movie_name.lower(),
+            na=False
         )
     ]
 
@@ -156,9 +163,9 @@ def get_movie_details(movie_name):
 
     return {
         "title": movie["title"],
-        "rating":movie["rating"],
+        "rating": movie["rating"],
         "year": int(movie["year"]) if pd.notna(movie["year"]) else "N/A",
-        "poster_url":movie["poster_url"],
+        "poster_url": movie["poster_url"],
         "imdb_url": f"https://www.imdb.com/find/?q={movie['title'].replace(' ','+')}"
     }
 
@@ -168,7 +175,10 @@ def recommend(movie_name):
     movie_name = movie_name.lower()
 
     matches = new_df[
-        new_df['title'].str.lower().str.contains(movie_name)
+        new_df['title'].str.lower().str.contains(
+            movie_name,
+            na=False
+        )
     ]
 
     if matches.empty:
@@ -180,7 +190,13 @@ def recommend(movie_name):
         new_df['title'] == movie
     ].index[0]
 
-    distances = similarity[movie_index]
+    # Memory-efficient similarity calculation
+    movie_vector = vectors[movie_index]
+
+    distances = cosine_similarity(
+        movie_vector,
+        vectors
+    ).flatten()
 
     movie_list = sorted(
         list(enumerate(distances)),
@@ -196,9 +212,9 @@ def recommend(movie_name):
 
         recommendations.append({
             "title": row["title"],
-            "rating":row["rating"],
+            "rating": row["rating"],
             "year": int(row["year"]) if pd.notna(row["year"]) else "N/A",
-            "poster_url":row["poster_url"],
+            "poster_url": row["poster_url"],
             "imdb_url": f"https://www.imdb.com/find/?q={row['title'].replace(' ','+')}"
         })
 
